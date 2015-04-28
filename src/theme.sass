@@ -1,0 +1,10 @@
+@import 'bootstrap'
+
+@each $color in $color-list
+  $c: nth($color, 1)
+  $v: nth($color, 2)
+  .button-#{$c}
+    +make-button($v)
+  .bg-#{$c}
+    background-color: $v
+

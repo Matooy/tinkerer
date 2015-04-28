@@ -1,0 +1,84 @@
+@import 'bootstrap'
+
+body
+  font-family: Futura
+
+.header
+  position: fixed
+  width: 100%
+  top: 0
+
+.header+*
+  margin-top: 80px
+
+#content
+  width: 80%
+  margin-left: auto
+  margin-right: auto
+  padding-bottom: 100px
+
+h1
+  padding: 12px
+  +font((size: 2.8em, color: 'white'))
+  +bg-stripe(gold, white)
+
+h2
+  font-size: 2.2em
+
+pre
+  margin-top: 1em
+  padding: 6px
+  border: 1px solid #ccc
+  font-size: 1.2em
+
+.caption
+  margin-top: 2em
+  margin-bottom: 1em
+  font-size: 1.6em
+
+.parent
+  display: inline-block
+  padding: 12px
+  cursor: pointer
+
+  +on('hover')
+    opacity: .8
+
+  +on('hover', '.child')
+    +bg-color('blue')
+
+  .child
+    padding: 6px
+
+.door
+  border: 6px solid brown
+  +box(100px, 200px)
+  +bg-image('http://www.nostalghia.cz/dvd/txt/screen/norstejn_pohadka.jpg', cover, -100)
+  +door(65deg, -1, 0, .1, 400)
+    background: color('red')
+
+.bg-block
+  width: 100px
+  text-align: center
+  border: 1px solid #ccc
+  +text-block(2em)
+  +bg-block(4px 8px 4px)
+    background: #eee
+
+.bg-block_bg-fill
+  +easing(.08)
+  +circle(100px)
+  +bg-color('red')
+  padding: 6px
+  &:hover
+    +muto(scale(1.2, 1.2))
+  +bg-block(6)
+    +circle(88px)
+    +bg-fill
+    +bg-image('http://upload.wikimedia.org/wikipedia/en/e/e3/Skazka_skazok_%28screenshot%29.jpg')
+
+.text-stroke
+  +font(( family: serif, align: left, size: 2.4em, color: white, indent: 1em, case: uppercase ))
+  +text-bevel(4px, black, (240 300))
+  +on('hover')
+    +vp(transform, scale(1.2,1.2) 1s)

@@ -1,0 +1,129 @@
+
+@function media-width($name, $max: false){
+  @if $name == 'laptop' {
+    @return 931px null;
+  }
+  @if $name == 'desktop' {
+    @return 931px null;
+  }
+  @if $name == 'tablet'{
+    @return 601px 930px;
+  }
+  @if $name == 'palmtop-large' {
+    @return 0px 700px;
+  }
+  @if $name == 'palmtop' {
+    @return 0px 600px;
+  }
+  @warn 'What is #{$name}?';
+}
+
+@mixin media($args...) {
+
+  $type: null;
+  $min: false;
+  $max: false;
+
+  @if length($args) == 2{
+    //
+    // media(100, 200)
+    //
+    $min: nth($args, 1);
+    $max: nth($args, 2);
+  }@else if length($args) == 1 {
+    //
+    // media(something)
+    //
+    $val: nth($args, 1);
+
+    @if type-of($val) == string {
+      //
+      // media('desktop')
+      //
+      $type: nth($args, 1);
+    }@else if type-of($val) == number {
+      //
+      // media(300)
+      //
+      $min: $val;
+    }@else if type-of($val) == list {
+      //
+      // media(('desktop', 'tabet'))
+      //
+      $min: 9999;
+      $max: 1;
+      @each $s in $val {
+        @if type-of($s) == string {
+          $ws: media-width(str-replace($s, ('!', '>', '<'), ''));
+          $mn: nth($ws, 1);
+          $mx: nth($ws, 2);
+
+          @if str-index($s, '>') == 1 and $mx{
+            $mn: $mx;
+          }
+
+          @debug "#{$s} -> #{$mn}, #{$mx}";
+
+          @if type-of($min) == number and $mn {
+            @if $mn < $min {
+              $min: $mn;
+            }
+          } @else {
+            $min: false;
+          }
+
+          @if type-of($max) == number and $mx {
+            @if $mx > $max {
+              $max: $mx;
+            }
+          } @else {
+            $max: false;
+          }
+
+          @warn ($min, $max);
+        }
+        @else if type-of($s) == number {
+          @if $max == null {
+            $max: $s;
+          }
+          @else if $s > $max {
+            $max: $s;
+          }
+        }
+      }
+    }
+  }
+
+  @if $type {
+    @if $type == 'desktop'{
+      $min: nth(media-width('desktop'), 1);
+      $max: nth(media-width('desktop'), 2);
+    }@else if $type == 'tablet' {
+      $min: nth(media-width('tablet'), 1);
+      $max: nth(media-width('tablet'), 2);
+    }@else if $type == 'palmtop' {
+      $max: nth(media-width('palmtop'), 1);
+      $max: nth(media-width('palmtop'), 2);
+    }
+  }
+
+  @if $min and $max {
+    @media only screen and (min-width:#{$min}) and (max-width:#{$max}){
+      @content
+    }
+  }@else{
+
+    @if $min {
+      @media only screen and (min-width:#{$min}){
+        @content
+      }
+    }
+
+    @if $max {
+      @media only screen and (max-width:#{$max}){
+        @content
+      }
+    }
+
+  }
+}

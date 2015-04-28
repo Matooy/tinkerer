@@ -1,0 +1,32 @@
+@media (min-width: 1681px) {
+}
+
+
+// Desktop
+@include media('pc'){
+  .tablet-only {display:none;}
+  .mobile-only {display: none;}
+  .palmtop-only {display: none;}
+}
+@media (min-width: nth(media-width('desktop'), 1)){
+  @import 'desktop';
+}
+
+// Tablet
+@include media('tablet'){
+  .palmtop-only {display: none;}
+  .desktop-only {display: none;}
+}
+@media (min-width: nth(media-width('tablet'), 1)) and (max-width: nth(media-width('tablet'), 2)){
+  @import 'tablet';
+}
+
+
+// Palmtop
+@include media('palmtop'){
+  .desktop-only {display: none;}
+  .tablet-only {display: none;}
+}
+@media (max-width: nth(media-width('tablet'), 2)){
+  @import 'palmtop';
+}
